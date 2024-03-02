@@ -1,0 +1,52 @@
+import random
+import tkinter as tk
+from tkinter import messagebox
+
+def play_game():
+    options = ["Rock", "Paper", "Scissors"]
+    user_choice = None
+
+    def choice_selected(choice):
+        nonlocal user_choice
+        user_choice = options[choice]
+        computer_choice = random.choice(options)
+
+        result_label.config(text=f"You chose: {user_choice}\nComputer chose: {computer_choice}")
+
+        if user_choice == computer_choice:
+            result_label.config(text=result_label.cget("text") + "\nIt's a tie!")
+        elif (
+            (user_choice == "Rock" and computer_choice == "Scissors") or
+            (user_choice == "Paper" and computer_choice == "Rock") or
+            (user_choice == "Scissors" and computer_choice == "Paper")
+        ):
+            result_label.config(text=result_label.cget("text") + "\nYou win!")
+        else:
+            result_label.config(text=result_label.cget("text") + "\nComputer wins!")
+
+    window = tk.Tk()
+    window.title("Rock, Paper, Scissors")
+
+    # Set window size
+    window.geometry("400x300")
+
+    # Label to display results
+    result_label = tk.Label(window, text="")
+    result_label.pack()
+
+    # Buttons for user choices
+    for i, option in enumerate(options):
+        button = tk.Button(window, text=option, command=lambda i=i: choice_selected(i))
+        button.pack(pady=10)
+
+    window.mainloop()
+
+# Main game loop
+while True:
+    play_game()
+
+    play_again = messagebox.askquestion("Play Again", "Do you want to play again?")
+    if play_again.lower() != 'yes':
+        print("Thanks for playing. Goodbye!")
+        break
+
